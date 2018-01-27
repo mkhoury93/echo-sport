@@ -14,7 +14,7 @@ def demo():
 def index():
     if request.method == 'GET':
         hello = "hello"
-        return render_template('build/index.html', hello = hello)
+        return render_template('index.html', hello = hello)
     else:
         return null
 
