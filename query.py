@@ -18,13 +18,23 @@ def index():
     else:
         return null
 
-@app.route('/astuce/<string:cityName>')
+@app.route('/astuce/<string:cityName>', methods=['POST','GET'])
 def astuce(cityName):
-    url = ('http://conu.astuce.media/api/cities/query?long_name=%s' % (cityName))
-    h = httplib2.Http()
-    result = json.loads(h.request(url,'GET')[1])
-    return jsonify(result)
-    print result
+    if request.method == 'GET':
+        url = ('http://conu.astuce.media/api/cities/query?long_name=%s' % (cityName))
+        h = httplib2.Http()
+        result = json.loads(h.request(url,'GET')[1])
+        return jsonify(result)
+        print result
+
+
+@app.route('/requests/', methods=['GET','POST'])
+def requestCity():
+    if request.method == 'POST':
+        cityName = request.form['cityName']
+        return redirect(url_for('astuce', cityName = cityName))
+    elif request.method =='GET':
+        return render_template('requests.html')
 
 #
 # @app.route('/astuce/<string:cityName>')
