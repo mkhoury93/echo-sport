@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+{% block content %}
+    <h1>Query Hockey Players Stats</h1>
+    <form action='{{url_for("requestHockeyPlayerStats")}}' method='post'>
+      <p> Games played? </p><input type='text' size='100' name='games' placeholder="Enter name of city here">
+      <p> Total points?</p><input type='text' size='100' name='points' placeholder="Enter name of city here">
+      <p> Age? </p><input type='text' size='100' name='age' placeholder="Enter name of city here">
+      <input type='submit' value='Query Astuce Media '>
+      <a href='{{url_for("requestHockeyPlayerStats")}}'> cancel </a>
+    </form>
+{% endblock %}

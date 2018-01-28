@@ -15,8 +15,6 @@ def index():
     if request.method == 'GET':
         hello = "hello"
         return render_template('index.html', hello = hello)
-    else:
-        return null
 
 @app.route('/astuce/<string:cityName>', methods=['POST','GET'])
 def astuce(cityName):
@@ -27,7 +25,6 @@ def astuce(cityName):
         return jsonify(result)
         print result
 
-
 @app.route('/requests/', methods=['GET','POST'])
 def requestCity():
     if request.method == 'POST':
@@ -35,6 +32,24 @@ def requestCity():
         return redirect(url_for('astuce', cityName = cityName))
     elif request.method =='GET':
         return render_template('requests.html')
+
+@app.route('/hockey/player', methods=['GET','POST'])
+def requestHockeyPlayerStats():
+    if request.method == 'GET':
+        return render_template('getHockeyPlayers.html')
+    elif request.method == 'POST':
+        games = request.form['games']
+        points = request.form['points']
+        age = request.form['age']
+        return redirect(url_for('getHockeyPlayerStatus', age=age, games=games, points=points))
+
+@app.route('/hockey/player/<int:age>/<int:games>/<int:points>')
+def getHockeyPlayerStatus(games, age, points):
+    url = ('http://conu.astuce.media/api/sports/hockey/gfx/statistic/person/ranking.json?Stat=SkatingGamesPlayed&SkatingGamesPlayed=%s&age=%s&SkatingPointsTotal=%s&take=2' % (games, age, points))
+    h = httplib2.Http()
+    result = json.loads(h.request(url,'GET')[1])
+    print "what's going on "
+    return jsonify(result)
 
 #
 # @app.route('/astuce/<string:cityName>')
